@@ -8,16 +8,17 @@ on:
 
 jobs:
   tagged-release:
-    name: "Tagged Release"
+    name: "release on tag push"
     runs-on: "ubuntu-latest"
 
     steps:
-      # ...
-      - name: "Build & test"
+      - name: "checkout source"
+        uses: actions/checkout@v4
+      - name: "build release archive"
         run: |
           make clean dist
-
-      - uses: "marvinpinto/action-automatic-releases@latest"
+      - name: "upload and release"
+        uses: "marvinpinto/action-automatic-releases@latest"
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
           prerelease: false
