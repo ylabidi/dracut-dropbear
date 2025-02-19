@@ -3,11 +3,7 @@ include config.mk
 export DESTDIR=
 export MODULEDIR=${DESTDIR}$(DRACUT_MODULEDIR)
 
-ifeq ($(NEED_CRYPTSETTLE),1)
-	SUBDIRS=modules/67dropbear modules/cryptsettle-patch
-else
-	SUBDIRS=modules/67dropbear
-endif
+SUBDIRS=modules/67dropbear
 
 .PHONY: install all clean dist $(SUBDIRS)
 
