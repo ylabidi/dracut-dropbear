@@ -3,11 +3,8 @@ include config.mk
 export DESTDIR=
 export MODULEDIR=${DESTDIR}$(DRACUT_MODULEDIR)
 
-ifeq ($(NEED_CRYPTSETTLE),1)
-	SUBDIRS=modules/67dropbear modules/cryptsettle-patch
-else
-	SUBDIRS=modules/67dropbear
-endif
+SUBDIRS=modules/67dropbear
+DISTNAME=dracut-dropbear-$(shell git describe --tags | sed s:v::)
 
 .PHONY: install all clean dist $(SUBDIRS)
 
@@ -23,6 +20,5 @@ clean: $(SUBDIRS)
 $(SUBDIRS):
 	$(MAKE) -C $@ $(MAKECMDGOALS)
 
-DISTNAME=dracut-dropbear-$(shell git describe --tags | sed s:v::)
 dist:
 	git archive --format=tar --prefix=$(DISTNAME)/ HEAD | gzip -9 > $(DISTNAME).tar.gz
