@@ -4,6 +4,7 @@ export DESTDIR=
 export MODULEDIR=${DESTDIR}$(DRACUT_MODULEDIR)
 
 SUBDIRS=modules/67dropbear
+DISTNAME=dracut-dropbear-$(shell git describe --tags | sed s:v::)
 
 .PHONY: install all clean dist $(SUBDIRS)
 
@@ -19,6 +20,5 @@ clean: $(SUBDIRS)
 $(SUBDIRS):
 	$(MAKE) -C $@ $(MAKECMDGOALS)
 
-DISTNAME=dracut-dropbear-$(shell git describe --tags | sed s:v::)
 dist:
 	git archive --format=tar --prefix=$(DISTNAME)/ HEAD | gzip -9 > $(DISTNAME).tar.gz
