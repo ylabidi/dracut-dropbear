@@ -3,25 +3,30 @@ name: "release"
 
 on:
   push:
-    tags:
-      - "v*"
+    branches:
+      - main
 
 jobs:
-  tagged-release:
-    name: "release on tag push"
-    runs-on: "ubuntu-latest"
-
+  release:
+    permissions:
+      contents: write
+    name: release
+    runs-on: ubuntu-latest
     steps:
       - name: "checkout source"
         uses: actions/checkout@v4
       - name: "build release archive"
         run: |
-          filename="dracut-dropbear-$(git describe --tags | sed s:v::)"
-          git archive --format=tar HEAD | gzip -9 > "${filename}.tar.gz"
-      - name: "upload and release"
-        uses: "marvinpinto/action-automatic-releases@latest"
+          git archive --format=tar HEAD | gzip -9 > "dracut-dropbear.tar.gz"
+      - uses: actions/setup-node@4
+        name: "setup semantic release plugin"
         with:
-          repo_token: "${{ secrets.GITHUB_TOKEN }}"
-          prerelease: false
-          files: |
-            *.tar.gz
+          cache: npm
+          node-version: lts/*
+      - name: "publish release"
+      - run: npm clean-install
+      - run: npm install --global corepack@latest
+      - run: corepack npm audit signatures
+      - run: npx semantic-release@21.0.2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
