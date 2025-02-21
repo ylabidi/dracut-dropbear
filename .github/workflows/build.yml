@@ -23,6 +23,6 @@ jobs:
       - name: "publish release"
         uses: cb80/pubrel@v0.21.0
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          files:
-            - ${{env.asset_name}}
+          token: "${{ secrets.GITHUB_TOKEN }}"
+          files: |
+            "${{env.asset_name}}"
