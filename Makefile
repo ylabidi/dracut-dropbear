@@ -12,7 +12,7 @@ all: $(SUBDIRS)
 
 install: $(SUBDIRS)
 	mkdir -p $(DESTDIR)/etc/dracut.conf.d/
-	cp 04-dracut-dropbear.conf $(DESTDIR)/etc/dracut.conf.d/
+	cp 04-dropbear.conf $(DESTDIR)/etc/dracut.conf.d/
 
 clean: $(SUBDIRS)
 	rm -f dracut-dropbear-*gz config.mk
